@@ -1,0 +1,16 @@
+task: addition
+dataset:
+  train_digits: 5
+  gen_digits: 10
+  train_size: 50000
+  val_size: 5000
+  gen_size: 2000
+
+model:
+  d_model: 128
+  nhead: 4
+  num_encoder_layers: 3
+  num_decoder_layers: 3
+  dim_feedforward: 256
+  dropout: 0.1
+  
