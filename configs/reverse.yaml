@@ -1,0 +1,22 @@
+task: reverse
+
+dataset:
+  min_len: 3
+  max_len: 10
+  train_size: 8000
+  val_size: 1000
+
+model:
+  d_model: 128
+  nhead: 4
+  num_encoder_layers: 2
+  num_decoder_layers: 2
+  dim_feedforward: 256
+  dropout: 0.1
+
+training:
+  lr: 3e-4
+  batch_size: 128
+  max_epochs: 30
+  patience: 5
+  checkpoint_dir: ./checkpoints/reverse
