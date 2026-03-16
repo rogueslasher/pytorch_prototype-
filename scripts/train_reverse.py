@@ -1,6 +1,7 @@
 
 import argparse
 import math
+import os
 import random
 import string
 
@@ -257,13 +258,13 @@ def train():
                   trainer=trainer).attach(evaluator)
 
     os.makedirs(CFG["checkpoint_dir"], exist_ok=True)
-    Checkpoint(
+    checkpoint_handler = Checkpoint(
         to_save={"model": model, "optimizer": optimizer},
         save_handler=DiskSaver(CFG["checkpoint_dir"], create_dir=True, require_empty=False),
         n_saved=1, score_function=score_fn, score_name="neg_val_loss",
         global_step_transform=global_step_from_engine(trainer),
-    ).attach(evaluator)
-
+    )
+    evaluator.add_event_handler(Events.COMPLETED, checkpoint_handler)
     PROBES = [("hello","olleh"), ("abcdef","fedcba"),
               ("python","nohtyp"), ("ignite","etingi")]
 

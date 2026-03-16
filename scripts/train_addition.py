@@ -1,6 +1,7 @@
 import argparse
 import math
 import random
+from xml.parsers.expat import model
 
 import torch
 import torch.nn as nn
@@ -14,9 +15,9 @@ from ignite.contrib.handlers import ProgressBar
 CFG = {
     "train_digits":   5,
     "gen_digits":     10,
-    "train_size":     50000,
-    "val_size":       5000,
-    "gen_size":       2000,
+    "train_size":     10000,
+    "val_size":       1000,
+    "gen_size":       500,
     "batch_size":     256,
     "d_model":        128,
     "nhead":          4,
@@ -25,7 +26,7 @@ CFG = {
     "dim_feedforward": 256,
     "dropout":        0.1,
     "lr":             3e-4,
-    "max_epochs":     50,
+    "max_epochs":     40,
     "patience":       7,
     "checkpoint_dir": "./checkpoints/addition",
     "device":         "cuda" if torch.cuda.is_available() else "cpu",
@@ -308,12 +309,13 @@ def train():
                   trainer=trainer).attach(evaluator)
 
     os.makedirs(CFG["checkpoint_dir"], exist_ok=True)
-    Checkpoint(
+    checkpoint_handler = Checkpoint(
         to_save={"model": model, "optimizer": optimizer},
         save_handler=DiskSaver(CFG["checkpoint_dir"], create_dir=True, require_empty=False),
         n_saved=1, score_function=score_fn, score_name="neg_val_loss",
         global_step_transform=global_step_from_engine(trainer),
-    ).attach(evaluator)
+    )
+    evaluator.add_event_handler(Events.COMPLETED, checkpoint_handler)
 
     PROBES = [
         ("12+34",       str(12 + 34)),
