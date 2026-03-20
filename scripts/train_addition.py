@@ -1,7 +1,6 @@
 import argparse
 import math
 import random
-from xml.parsers.expat import model
 
 import torch
 import torch.nn as nn
@@ -13,21 +12,21 @@ from ignite.metrics import Loss
 from ignite.contrib.handlers import ProgressBar
 
 CFG = {
-    "train_digits":   5,
-    "gen_digits":     10,
-    "train_size":     10000,
-    "val_size":       1000,
+    "train_digits":   3,      # was 5 — start simpler, up to 999+999
+    "gen_digits":     6,      # was 10
+    "train_size":     20000,
+    "val_size":       2000,
     "gen_size":       500,
     "batch_size":     256,
     "d_model":        128,
     "nhead":          4,
     "num_enc_layers": 3,
     "num_dec_layers": 3,
-    "dim_feedforward": 256,
-    "dropout":        0.1,
-    "lr":             3e-4,
+    "dim_feedforward": 512,   
+    "dropout":        0.0,    
+    "lr":             1e-3,   
     "max_epochs":     40,
-    "patience":       7,
+    "patience":       10,
     "checkpoint_dir": "./checkpoints/addition",
     "device":         "cuda" if torch.cuda.is_available() else "cpu",
 }
@@ -224,7 +223,11 @@ def run_generalization(model, device):
     model.eval()
     results = {}
     for _ in range(1000):
-        src_str, expected = random_sample(CFG["gen_digits"])
+        d = random.randint(1, CFG["gen_digits"])
+        max_val = 10 ** d - 1
+        a = random.randint(0, max_val)
+        b = random.randint(0, max_val)
+        src_str, expected = f"{a}+{b}", str(a + b)
         predicted = model.infer(src_str, device)
         correct   = (predicted == expected)
         a, b = src_str.split("+")
