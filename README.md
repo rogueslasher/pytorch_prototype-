@@ -96,9 +96,9 @@ Tested on up to **6 digits** (OOD = beyond training distribution).
 | 1 | 4 | 197 | 2.0% | in-dist |
 | 2 | 137 | 150 | 91.3% | in-dist |
 | 3 | 177 | 178 | 99.4% | in-dist |
-| 4 | 0 | 161 | 0.0% | OOD ⚡ |
-| 5 | 0 | 153 | 0.0% | OOD ⚡ |
-| 6 | 0 | 161 | 0.0% | OOD ⚡ |
+| 4 | 0 | 161 | 0.0% | OOD  |
+| 5 | 0 | 153 | 0.0% | OOD  |
+| 6 | 0 | 161 | 0.0% | OOD  |
 
 **In-distribution: 60.6% — OOD: 0.0%**
 
