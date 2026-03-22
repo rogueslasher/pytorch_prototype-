@@ -107,15 +107,3 @@ The sharp accuracy drop beyond the training distribution demonstrates the
 easy to reproduce across different architectures (Transformer vs Mamba vs RWKV).
 
 ---
-
-## Connection to trainite
-
-This prototype is a direct proof-of-concept for the GSoC 2026 project.
-
-The `src/` structure here — separate `datasets/`, `models/`, `trainers/` with
-a thin `main.py` wiring them via YAML config — is the skeleton that `trainite`
-would make installable and configurable.
-
-The generalization experiment above is exactly the kind of benchmark `trainite`
-should automate: swap `Seq2SeqTransformer` for Mamba or RWKV via config, run
-the same experiment, compare who handles length generalization better.
